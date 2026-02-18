@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gold Gap Index — Gilbert Analytics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--dark:#2B1B15;--gold:#C5A065;--light-gold:#F2EBD9;--cream:#FAF8F5;--grey:#555;--lgrey:#D0D0D0;--footer:#808080;--red:#C0392B;--green:#2E7D32;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Source Sans 3','Segoe UI',sans-serif;background:var(--cream);color:var(--dark);}
+  .ctn{max-width:1100px;margin:0 auto;padding:32px 40px;}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-bottom:32px;}
+  .hdr-b{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--dark);}
+  .hdr-b span{color:var(--gold);margin-left:12px;}
+  .hdr-d{font-size:10px;color:var(--footer);letter-spacing:1px;}
+  .ttl{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--dark);line-height:1.1;margin-bottom:10px;}
+  .ttl .g{color:var(--gold);}
+  .sub{font-size:21px;color:#2a2a2a;font-weight:400;line-height:1.5;margin-bottom:28px;max-width:750px;}
+  .mets{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px;}
+  .mb{background:white;border:1px solid var(--lgrey);border-radius:0 0 6px 6px;padding:20px 16px;text-align:center;position:relative;overflow:hidden;}
+  .mb::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .mb.gt::before{background:var(--gold);}.mb.rt::before{background:var(--red);}.mb.grt::before{background:var(--green);}
+  .ml{font-size:10px;color:var(--footer);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+  .mv{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;margin:4px 0;}
+  .ms{font-size:12px;color:var(--grey);margin-top:2px;}
+  .mn{font-size:9px;color:var(--footer);margin-top:6px;}
+  .cw{background:white;border:1px solid var(--lgrey);border-radius:8px;padding:24px 20px 16px;}
+  .ct{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--dark);margin-left:50px;}
+  .cs{font-size:11px;color:var(--footer);margin-bottom:16px;margin-left:50px;margin-top:4px;}
+  .cwrap{position:relative;width:100%;height:540px;}
+  .cf{display:flex;justify-content:space-between;padding:6px 60px 0 40px;font-size:9px;color:var(--footer);}
+  .leg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:8px 16px;margin-top:16px;padding:12px 16px;background:white;border:1px solid var(--lgrey);border-radius:6px;}
+  .li{display:flex;align-items:center;gap:10px;}
+  .ls{flex-shrink:0;width:28px;height:14px;border-radius:2px;}
+  .ll{font-size:11px;font-weight:600;color:var(--dark);line-height:1.2;}
+  .ld{font-size:9px;color:var(--footer);line-height:1.2;}
+
+  .htr{margin-top:20px;padding:16px 20px;background:white;border:1px solid var(--lgrey);border-radius:6px;}
+  .htr h3{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px;letter-spacing:1px;}
+  .htr p{font-size:11px;color:var(--grey);line-height:1.7;}
+  .era{margin-top:20px;}
+  .erat{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--dark);margin-bottom:12px;letter-spacing:0.5px;text-align:center;}
+  .erag{display:flex;align-items:center;justify-content:center;gap:20px;}
+  .eb{background:white;border-radius:8px;padding:20px 28px;text-align:center;min-width:200px;}
+  .eb.bl{border:2px solid var(--gold);}.eb.cr{border:2px solid var(--red);}
+  .ep{font-size:10px;color:var(--footer);text-transform:uppercase;letter-spacing:2px;}
+  .ev{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;margin:10px 0;}
+  .ed{font-size:12px;color:var(--grey);}
+  .en{font-size:10px;color:var(--footer);margin-top:6px;}
+  .earr{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:70px;}
+  .nts{margin-top:20px;padding:10px 14px;border:1px solid var(--lgrey);border-radius:4px;font-size:9px;color:var(--footer);line-height:1.6;}
+  .cpr{margin-top:12px;text-align:center;font-size:9px;color:var(--footer);letter-spacing:.5px;padding-bottom:20px;}
+  @keyframes fiu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  .an{animation:fiu .6s ease-out forwards;opacity:0;}
+  .d1{animation-delay:.1s;}.d2{animation-delay:.2s;}.d3{animation-delay:.3s;}.d4{animation-delay:.5s;}.d5{animation-delay:.7s;}.d6{animation-delay:.9s;}
+  .tip{background:white;border:2px solid var(--gold);border-radius:8px;padding:14px 18px;font-family:'Source Sans 3',sans-serif;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.12);min-width:220px;pointer-events:none;}
+</style>
+</head>
+<body>
+<div class="ctn">
+  <div class="hdr an d1"><div class="hdr-b">GILBERT ANALYTICS <span>| THE GOLD GAP INDEX</span></div><div class="hdr-d">Q1 2026 · FEB 17 · v7.6 (14 CORE)</div></div>
+  <h1 class="ttl an d1">MIND THE <span class="g">GOLD GAP</span></h1>
+  <p class="sub an d2">Gold doubled. Margins tripled. What acquirers pay for gold in the ground barely moved — then <em>collapsed</em>.</p>
+
+  <div class="mets an d2">
+    <div class="mb gt"><div class="ml">2021–2023 · 7 Core Deals</div><div class="mv" style="color:var(--dark)"><span id="cb">0</span>%</div><div class="ms">average share of margin paid</div><div class="mn">n=5 Core excl. Great Bear</div></div>
+    <div class="mb rt"><div class="ml">2024–2026 · 4 Core Deals</div><div class="mv" style="color:var(--red)"><span id="cc">0</span>%</div><div class="ms">average share of margin paid</div><div class="mn">Down <span id="ck">0</span>% from historical median</div></div>
+    <div class="mb grt"><div class="ml">At Today's Margins</div><div class="mv"><span style="color:var(--green)">$<span id="cv">0</span></span><span style="font-size:16px;color:var(--footer);font-weight:400"> vs </span><span style="color:var(--red)">$107</span><span style="font-size:14px;color:var(--footer);font-weight:400">/oz</span></div><div class="ms">historical benchmark vs actual</div><div class="mn">Gold $5,100 · Margin $3,500 · Benchmark = 22.1% × margin</div></div>
+  </div>
+
+  <div class="cw an d3">
+    <div class="ct">The Gap: Benchmark vs. Actual Transaction Prices</div>
+    <div class="cs">Single logarithmic axis · All values in $/oz USD · Gold, margin, benchmark, actual, and transactions on one honest scale</div>
+    <div class="cwrap"><canvas id="gc"></canvas></div>
+    <div class="cf"><span>← Cipher median ~$40/oz (253 deals, 1990–2013)</span><span style="color:var(--gold);font-weight:700" id="gel">Gold $5,100</span></div>
+  </div>
+
+  <div class="leg an d4">
+    <div class="li"><div class="ls" style="background:linear-gradient(180deg,#C5A06588,#C5A06528);border:2px solid var(--gold)"></div><div><div class="ll">Benchmark (should be)</div><div class="ld">22.1% of margin</div></div></div>
+    <div class="li"><div class="ls" style="border-top:3px dashed var(--dark);height:0;margin-top:7px"></div><div><div class="ll">Actual $/oz</div><div class="ld">Carried forward</div></div></div>
+    <div class="li"><div style="width:16px;height:16px;border-radius:50%;background:var(--dark);border:2.5px solid var(--gold);flex-shrink:0"></div><div><div class="ll">Transaction</div><div class="ld">Core Tier</div></div></div>
+    <div class="li"><div class="ls" style="background:linear-gradient(180deg,#2E7D3240,#2E7D3210)"></div><div><div class="ll" style="color:var(--green)">Margin</div><div class="ld">Gold − AISC</div></div></div>
+    <div class="li"><div style="display:flex;align-items:center"><div style="width:22px;border-top:2px dashed var(--gold)"></div><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);margin-left:-1px"></div></div><div><div class="ll" style="color:var(--gold)">Gold spot</div><div class="ld">Log₁₀ axis</div></div></div>
+  </div>
+
+
+
+  <div class="htr an d5"><h3>HOW TO READ THIS CHART</h3><p>The <b style="color:var(--gold)">solid gold line</b> shows the benchmark (22.1% of margin). The <b>dark dashed line</b> shows what acquirers actually paid — flat around $67–167/oz then hovering at $107/oz while the benchmark soared. The widening space between the two is <b style="font-size:15px;letter-spacing:1px">THE GAP</b>. The <b style="color:var(--gold)">dashed gold line</b> tracks the gold spot price sweeping from ~$1,800 to $5,100. The <b style="color:var(--green)">green shading</b> shows operating margin. The log scale compresses high values and expands the $40–$500 range where the gap lives — making it visually clear without distortion. Transactions span Exploration through Feasibility stages (pre-production, Tier-1 jurisdictions).</p></div>
+
+  <div class="era an d6"><div class="erat">Gold Gap by Era — Core Tier (excl. outliers)</div>
+    <div class="erag">
+      <div class="eb bl"><div class="ep">2021 – 2023</div><div class="ev" style="color:var(--dark)">22.1%</div><div class="ed">average share of margin paid</div><div class="en">n=5 · n=5 Core excl. Great Bear</div></div>
+      <div class="earr"><div style="font-size:36px;color:var(--red);line-height:1">→</div><div style="font-size:16px;font-weight:700;color:var(--red)">−78%</div></div>
+      <div class="eb cr"><div class="ep">2024 – 2026</div><div class="ev" style="color:var(--red)">3.0%</div><div class="ed">average share of margin paid</div><div class="en">n=3 · incl. Q1'26 deal (0.9%)</div></div>
+    </div>
+  </div>
+
+  <div class="nts">Gold spot prices (XAU/USD) from Investing.com. AISC: $1,300/oz (2021–2023), $1,600/oz (2024–2026) per WGC/GA benchmarks. Core Tier: 0.3–5.0 Moz, pre-production (Exploration through Feasibility), Tier-1 jurisdictions, arms-length. n=4 current period. 53 transactions reviewed, 14 Core, 33 excluded (see Methodology Validation Report). Stage mixing present. Single logarithmic scale. Not investment advice.</div>
+  <div class="cpr">© 2026 Gilbert Analytics. All Rights Reserved. | Confidential | Not Investment Advice</div>
+</div>
+
+<script>
+const MED=0.2206, ACT=107, AISC=1600;
+const _u=new URLSearchParams(window.location.search);
+const _gp=_u.get('gold')?parseFloat(_u.get('gold')):null;
+const Q=["Q1'21","Q2'21","Q3'21","Q4'21","Q1'22","Q2'22","Q3'22","Q4'22","Q1'23","Q2'23","Q3'23","Q4'23","Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"];
+const G=[1796,1814,1790,1796,1878,1873,1727,1732,1891,1977,1926,1978,2071,2337,2476,2661,2862,3288,3458,4158,5100];
+const AI=[1300,1300,1300,1300,1300,1300,1300,1300,1300,1300,1300,1300,1600,1600,1600,1600,1600,1600,1600,1600,1600];
+if(_gp)G[G.length-1]=_gp;
+let M=G.map((g,i)=>g-AI[i]);
+let B=M.map(m=>Math.round(MED*m));
+const TX={1:74,4:112,7:167,9:67,11:88,18:87,19:89,20:107};
+const TI={1:[{p:74,pct:13.8}],4:[{p:106,pct:20.6},{p:118,pct:18.9}],7:[{p:167,pct:50.8}],9:[{p:67,pct:9.4}],11:[{p:85,pct:12.4},{p:91,pct:13.4}],18:[{p:87,pct:5.0}],19:[{p:89,pct:3.2}],20:[{p:107,pct:3.1}]};
+let C=new Array(Q.length).fill(null);let lk=null;
+for(let i=0;i<Q.length;i++){if(TX[i]!==undefined)lk=TX[i];C[i]=lk;}
+
+const ctx=document.getElementById('gc').getContext('2d');
+const benchGrad=ctx.createLinearGradient(0,0,0,540);
+benchGrad.addColorStop(0,'rgba(197,160,101,0.55)');benchGrad.addColorStop(1,'rgba(197,160,101,0.15)');
+const marginGrad=ctx.createLinearGradient(0,0,0,540);
+marginGrad.addColorStop(0,'rgba(46,125,50,0.25)');marginGrad.addColorStop(1,'rgba(46,125,50,0.06)');
+
+const chart=new Chart(ctx,{
+  type:'line',
+  data:{labels:Q,datasets:[
+    {label:'Margin',data:M,fill:true,backgroundColor:marginGrad,borderColor:'transparent',pointRadius:0,tension:0.3,order:6},
+    {label:'Benchmark',data:B,fill:true,backgroundColor:benchGrad,borderColor:'#C5A065',borderWidth:2.5,pointRadius:0,tension:0.3,order:5},
+    {label:'Actual',data:C,fill:false,borderColor:'#2B1B15',borderWidth:2.5,borderDash:[8,4],pointRadius:0,tension:0,spanGaps:true,order:3},
+    {label:'Txns',data:Q.map((_,i)=>TX[i]!==undefined?TX[i]:null),fill:false,borderColor:'transparent',showLine:false,
+     pointRadius:Q.map((_,i)=>TX[i]!==undefined?7:0),
+     pointBackgroundColor:Q.map((_,i)=>i===20?'#C0392B':'#2B1B15'),
+     pointBorderColor:'#C5A065',pointBorderWidth:2.5,
+     pointHoverRadius:10,pointHoverBorderWidth:3,order:1},
+    {label:'Gold',data:[...G],fill:false,borderColor:'#C5A065',borderWidth:2,borderDash:[6,3],
+     pointRadius:Q.map((_,i)=>i===Q.length-1?7:0),
+     pointBackgroundColor:'#C5A065',pointBorderColor:'#FFFFFF',pointBorderWidth:2,
+     tension:0.3,order:4}
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    layout:{padding:{right:120}},
+    interaction:{mode:'index',intersect:false},
+    scales:{
+      y:{
+        type:'logarithmic',min:20,max:6000,
+        ticks:{
+          callback:v=>{const t=[20,30,40,50,100,200,500,1000,2000,3000,5000];return t.includes(v)?'$'+v.toLocaleString():'';},
+          font:{size:10,family:"'Source Sans 3'"},color:'#808080'
+        },
+        title:{display:true,text:'$/oz (USD) — Log Scale',font:{size:11,family:"'Source Sans 3'"},color:'#555'},
+        grid:{color:'rgba(0,0,0,0.06)'},
+      },
+      x:{ticks:{font:{size:9,family:"'Source Sans 3'"},color:'#808080',maxRotation:45,minRotation:45},grid:{color:'#ECECEC',lineWidth:0.5}}
+    },
+    plugins:{legend:{display:false},tooltip:{
+      enabled:false,
+      external(c){
+        let el=document.getElementById('tt');
+        if(!el){el=document.createElement('div');el.id='tt';el.className='tip';document.body.appendChild(el);}
+        const t=c.tooltip;if(t.opacity===0){el.style.opacity=0;return;}
+        const i=t.dataPoints?.[0]?.dataIndex;if(i===undefined)return;
+        let h=`<div style="font-weight:700;color:#2B1B15;font-size:14px;border-bottom:1px solid #D0D0D0;padding-bottom:6px;margin-bottom:8px">${Q[i]}</div>`;
+        h+=`<div style="display:grid;grid-template-columns:auto auto;gap:3px 16px;color:#555">`;
+        h+=`<span style="color:#C5A065">Gold spot:</span><span style="text-align:right;font-weight:700;color:#C5A065">$${G[i].toLocaleString()}</span>`;
+        h+=`<span>AISC:</span><span style="text-align:right">$${AI[i].toLocaleString()}</span>`;
+        h+=`<span style="color:#2E7D32;font-weight:700">Margin:</span><span style="text-align:right;color:#2E7D32;font-weight:700">$${M[i].toLocaleString()}</span>`;
+        h+=`<span style="color:#C5A065">Benchmark:</span><span style="text-align:right;color:#C5A065;font-weight:700">$${B[i]}/oz</span>`;
+        if(C[i])h+=`<span>Actual:</span><span style="text-align:right;font-weight:600">$${C[i]}/oz</span>`;
+        h+=`</div>`;
+        if(TI[i]){h+=`<div style="border-top:1px solid #D0D0D0;margin-top:6px;padding-top:6px">`;TI[i].forEach(x=>{
+          h+=`<div style="font-size:11px;margin:2px 0">$${x.p}/oz · Gap ${x.pct.toFixed(1)}%</div>`;
+        });h+=`</div>`;}
+        el.innerHTML=h;el.style.opacity=1;
+        const p=c.chart.canvas.getBoundingClientRect();
+        let l=p.left+t.caretX+15;if(l+260>window.innerWidth)l=p.left+t.caretX-270;
+        el.style.position='fixed';el.style.left=l+'px';el.style.top=(p.top+t.caretY-30)+'px';el.style.zIndex='10000';
+      }
+    }}
+  },
+  plugins:[
+    /* Cipher reference line at $40 */
+    {id:'ci',afterDraw(ch){
+      const y=ch.scales.y.getPixelForValue(40),c=ch.ctx;
+      c.save();c.setLineDash([3,3]);c.strokeStyle='rgba(128,128,128,0.4)';c.lineWidth=1;
+      c.beginPath();c.moveTo(ch.chartArea.left,y);c.lineTo(ch.chartArea.right,y);c.stroke();c.restore();
+    }},
+    /* THE GAP callout bracket */
+    {id:'gap',afterDraw(ch){
+      const c=ch.ctx,li=Q.length-1;
+      const yS=ch.scales.y,xS=ch.scales.x;
+      const bY=yS.getPixelForValue(B[li]);
+      const aY=yS.getPixelForValue(C[li]);
+      if(B[li]<=C[li])return;
+      const xNow=xS.getPixelForValue(li);
+      const xPrev=xS.getPixelForValue(li-1);
+      const bx=Math.round((xPrev+xNow)/2);
+      const tw=10;
+      c.save();c.strokeStyle='#C0392B';c.lineWidth=2.5;c.setLineDash([]);
+      c.beginPath();c.moveTo(bx,bY);c.lineTo(bx,aY);c.stroke();
+      c.beginPath();c.moveTo(bx-tw/2,bY);c.lineTo(bx+tw/2,bY);c.stroke();
+      c.beginPath();c.moveTo(bx-tw/2,aY);c.lineTo(bx+tw/2,aY);c.stroke();
+      const dg=B[li]-C[li],ml=(B[li]/C[li]).toFixed(1),midY=(bY+aY)/2;
+      const t1='THE GAP',t2='$'+dg+'/oz',t3=ml+'× actual';
+      c.font="bold 10px 'Source Sans 3'";
+      const w=Math.max(c.measureText(t1).width,c.measureText(t2).width,c.measureText(t3).width)+20;
+      const rh=56,rx=bx-w-14,ry=midY-rh/2,rr=5;
+      c.fillStyle='#C0392B';c.beginPath();
+      c.moveTo(rx+rr,ry);c.lineTo(rx+w-rr,ry);c.arcTo(rx+w,ry,rx+w,ry+rr,rr);
+      c.lineTo(rx+w,ry+rh-rr);c.arcTo(rx+w,ry+rh,rx+w-rr,ry+rh,rr);
+      c.lineTo(rx+rr,ry+rh);c.arcTo(rx,ry+rh,rx,ry+rh-rr,rr);
+      c.lineTo(rx,ry+rr);c.arcTo(rx,ry,rx+rr,ry,rr);c.closePath();c.fill();
+      c.beginPath();c.moveTo(rx+w,midY);c.lineTo(rx+w+7,midY-6);c.lineTo(rx+w+7,midY+6);c.closePath();c.fill();
+      c.textAlign='left';c.fillStyle='white';
+      c.font="bold 9px 'Source Sans 3'";c.fillText(t1,rx+10,ry+15);
+      c.font="900 17px 'Playfair Display',serif";c.fillText(t2,rx+10,ry+35);
+      c.fillStyle='rgba(255,255,255,.75)';c.font="400 9px 'Source Sans 3'";c.fillText(t3,rx+10,ry+48);
+      c.restore();
+    }},
+    /* RIGHT-EDGE ENDPOINT LABELS */
+    {id:'endLabels',afterDraw(ch){
+      const c=ch.ctx, li=Q.length-1;
+      const yS=ch.scales.y;
+      const xR=ch.chartArea.right;
+      const pad=12;
+      c.save();
+      c.textAlign='left';
+
+      /* Gold label */
+      const yG=yS.getPixelForValue(G[li]);
+      c.font="bold 12px 'Source Sans 3'";c.fillStyle='#C5A065';
+      c.fillText('Gold $'+G[li].toLocaleString(),xR+pad,yG+4);
+
+      /* Margin label */
+      const yM=yS.getPixelForValue(M[li]);
+      c.font="bold 12px 'Source Sans 3'";c.fillStyle='#2E7D32';
+      c.fillText('Margin $'+M[li].toLocaleString(),xR+pad,yM+4);
+
+      /* Benchmark label — avoid overlap with Actual */
+      const yB=yS.getPixelForValue(B[li]);
+      c.font="600 11px 'Source Sans 3'";c.fillStyle='#C5A065';
+      c.fillText('Bench $'+B[li],xR+pad,yB-8);
+
+      /* Actual label */
+      const yA=yS.getPixelForValue(C[li]);
+      c.font="bold 12px 'Source Sans 3'";c.fillStyle='#C0392B';
+      c.fillText('Actual $'+C[li],xR+pad,yA+16);
+
+      c.restore();
+    }}
+  ]
+});
+document.getElementById('gc').addEventListener('mouseleave',()=>{const el=document.getElementById('tt');if(el)el.style.opacity=0;});
+
+/* Animated counters */
+function ac(id,tgt,dur,dec){const el=document.getElementById(id);if(!el)return;const s=performance.now();const f=n=>{const p=Math.min((n-s)/dur,1);const e=1-Math.pow(1-p,3);el.textContent=(e*tgt).toFixed(dec);if(p<1)requestAnimationFrame(f);else el.textContent=tgt.toFixed(dec);};requestAnimationFrame(f);}
+setTimeout(()=>{ac('cb',22.1,1200,1);ac('cc',3.0,1500,1);ac('ck',86,1400,0);
+const _cm=(_gp||G[G.length-1])-AISC;const _bv=Math.round(MED*_cm);
+ac('cv',_bv,1600,0);},400);
+if(_gp){document.getElementById('gel').textContent='Gold $'+_gp.toLocaleString();
+const _mn3=document.querySelector('.mb.grt .mn');
+if(_mn3){const _m=_gp-AISC;const _b=Math.round(MED*_m);_mn3.textContent='Gold $'+_gp.toLocaleString()+' · Margin $'+_m.toLocaleString()+' · Benchmark = 22.1% × margin';}
+}
+
+
+</script>
+</body>
+</html>
