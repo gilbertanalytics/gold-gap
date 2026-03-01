@@ -67,10 +67,11 @@
 </head>
 <body>
 <div class="ctn">
-  <div class="hdr an d1"><div class="hdr-b">GILBERT ANALYTICS <span>| THE GOLD GAP INDEX</span></div><div class="hdr-d">Q1 2026 &middot; FEB 27 &middot; v7.9</div></div>
+  <div class="hdr an d1"><div class="hdr-b">GILBERT ANALYTICS <span>| THE GOLD GAP INDEX</span></div><div class="hdr-d">Q1 2026 &middot; MAR 1 &middot; v7.10</div></div>
 
   <h1 class="ttl an d1">THE <span class="g">GOLD GAP</span> INDEX</h1>
   <div class="tagline an d1">The index every gold investor needs &mdash; and no one else publishes.</div>
+  <div style="font-size:11px;color:var(--footer);letter-spacing:0.5px;margin-bottom:4px" class="an d1">Pre-production gold transactions &bull; Tier-1 jurisdictions &bull; 0.3&ndash;7.0 Moz &bull; 14 transactions, 2021&ndash;present</div>
   <p class="sub an d2">Gold doubled. Margins tripled. What acquirers pay for gold in the ground barely moved &mdash; then <em>collapsed</em>. <a href="#calculator" class="calc-anchor">&darr; CALCULATE YOUR EV/oz</a></p>
 
   <div class="mets an d2">
@@ -81,7 +82,7 @@
 
   <div class="cw an d3">
     <div class="ct">The Gap: Benchmark vs. Actual Transaction Prices</div>
-    <div class="cs">Single logarithmic axis &middot; All values in $/oz USD &middot; Grade tiers from 14 Core M&amp;A transactions (2022&ndash;2026)</div>
+    <div class="cs">Single logarithmic axis &middot; All values in $/oz USD &middot; Grade tiers from 14 Core M&amp;A transactions (2021&ndash;present)</div>
     <div class="cwrap"><canvas id="gc"></canvas></div>
     <div class="cf"><span></span><span></span></div>
   </div>
@@ -157,7 +158,7 @@
       </div>
       <div style="min-width:170px;text-align:center;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--lgrey);align-self:flex-start">
         <div style="font-size:10px;color:var(--footer);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px">Current Benchmark</div>
-        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--gold)">$728<span style="font-size:14px;font-weight:400;color:var(--footer)">/oz</span></div>
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--gold)">$729<span style="font-size:14px;font-weight:400;color:var(--footer)">/oz</span></div>
         <div style="font-size:10px;color:var(--footer);margin-top:4px">22.1% &times; $3,300 margin</div>
         <div style="margin-top:10px;border-top:1px solid var(--lgrey);padding-top:10px">
           <div style="font-size:10px;color:var(--footer);margin-bottom:4px">Actual M&amp;A Average</div>
@@ -204,7 +205,7 @@
     const mcapUSD=mcapLocal*fx;
     const evUSD=evLocal*fx;
     const evoz=re>0?evUSD*1e6/re:0;
-    const pct=(evoz/728*100).toFixed(1);
+    const pct=(evoz/729*100).toFixed(1);
     const warn=document.getElementById('calc_warning');
     if(evUSD<=0){
       document.getElementById('calc_evoz').textContent='$'+Math.round(evoz);
@@ -218,10 +219,10 @@
     let zone='',zoneColor='';
     if(evoz<96){zone='Below low-grade M&A avg (<$96)';zoneColor='#C0392B';}
     else if(evoz<=296){zone='Within grade premium band ($96\u2013$296)';zoneColor='#8B6914';}
-    else if(evoz<=728){zone='Above high-grade M&A avg (>$296)';zoneColor='#27AE60';}
-    else{zone='Above benchmark ($728+)';zoneColor='#27AE60';}
+    else if(evoz<=729){zone='Above high-grade M&A avg (>$296)';zoneColor='#27AE60';}
+    else{zone='Above benchmark ($729+)';zoneColor='#27AE60';}
     document.getElementById('calc_zone').innerHTML='<span style="color:'+zoneColor+';padding:2px 8px;background:'+zoneColor+'18;border-radius:3px">'+zone+'</span>';
-    document.getElementById('calc_pct').textContent=pct+'% of $728 benchmark';
+    document.getElementById('calc_pct').textContent=pct+'% of $729 benchmark';
     let bk='Market Cap: ';
     if(_cur==='CAD') bk+='C$'+mcapLocal.toFixed(1)+'M (US$'+mcapUSD.toFixed(1)+'M)';
     else bk+='US$'+mcapUSD.toFixed(1)+'M';
@@ -288,7 +289,7 @@
     </div>
     <div class="qa-item">
       <div class="qa-q">14 transactions seems like a small sample.</div>
-      <div class="qa-a">These are all qualifying transactions that meet our criteria: 0.3&ndash;7 Moz, pre-production, Tier-1 jurisdictions, arms-length, 2022&ndash;2026. We reviewed 53 transactions and excluded 33 with documented reasons (producing mines, polymetallic assets, Tier-2 jurisdictions, etc.). We do not fabricate transactions to increase sample size. The database grows as new qualifying deals occur and is updated quarterly.</div>
+      <div class="qa-a">These are all qualifying transactions that meet our criteria: 0.3&ndash;7.0 Moz, pre-production, Tier-1 jurisdictions, arms-length, 2021&ndash;present. We reviewed 53 transactions and excluded 33 with documented reasons (producing mines, polymetallic assets, Tier-2 jurisdictions, etc.). We do not fabricate transactions to increase sample size. The database grows as new qualifying deals occur and is updated quarterly.</div>
     </div>
     <div class="qa-item">
       <div class="qa-q">Is EV/oz the same as what acquirers paid per ounce?</div>
@@ -302,7 +303,7 @@
 </div>
 
 <script>
-const MED=0.2206, ACT=107, AISC=1700;
+const MED=0.221, ACT=107, AISC=1700;
 const _u=new URLSearchParams(window.location.search);
 const _gp=_u.get('gold')?parseFloat(_u.get('gold')):null;
 const Q=["Q1'21","Q2'21","Q3'21","Q4'21","Q1'22","Q2'22","Q3'22","Q4'22","Q1'23","Q2'23","Q3'23","Q4'23","Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"];
@@ -543,7 +544,7 @@ document.getElementById('gc').addEventListener('mouseleave',()=>{const el=docume
 
 /* Animated counters */
 function ac(id,tgt,dur,dec){const el=document.getElementById(id);if(!el)return;const s=performance.now();const f=n=>{const p=Math.min((n-s)/dur,1);const e=1-Math.pow(1-p,3);el.textContent=(e*tgt).toFixed(dec);if(p<1)requestAnimationFrame(f);else el.textContent=tgt.toFixed(dec);};requestAnimationFrame(f);}
-setTimeout(()=>{ac('cb',22.1,1200,1);ac('cc',3.0,1500,1);ac('ck',86,1400,0);
+setTimeout(()=>{ac('cb',22.1,1200,1);ac('cc',3.0,1500,1);ac('ck',85,1400,0);
 const _cm=(_gp||G[G.length-1])-AISC;const _bv=Math.round(MED*_cm);
 ac('cv',_bv,1600,0);},400);
 if(_gp){
