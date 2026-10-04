@@ -85,7 +85,7 @@
 </head>
 <body>
 <div class="ctn">
-  <div class="hdr an d1"><div class="hdr-b">GILBERT ANALYTICS <span>| THE GOLD GAP INDEX</span></div><div class="hdr-d">OCT 2, 2026 &middot; OCTOBER &middot; v8.12</div></div>
+  <div class="hdr an d1"><div class="hdr-b">GILBERT ANALYTICS <span>| THE GOLD GAP INDEX</span></div><div class="hdr-d">OCT 2, 2026 &middot; OCTOBER &middot; v8.13</div></div>
 
   <h1 class="ttl an d1">THE <span class="g">GOLD GAP</span> INDEX</h1>
   <div class="tagline an d1">The index every gold investor needs &mdash; and no one else publishes.</div>
@@ -291,7 +291,7 @@
   document.getElementById('fx_display').textContent=FX_CADUSD.toFixed(2);
   </script>
 
-  <!-- CTA BAR: v8.12 EVERGREEN PAID CTA
+  <!-- CTA BAR: v8.13 EVERGREEN PAID CTA
        Founding window closed Sep 3, 2026 (100 seats or 30 days). Founding line dropped and the
        primary button relabelled, per the instruction this comment carried from v8.7. -->
   <div style="margin-top:24px;padding:26px 28px;background:var(--navy);border-radius:8px;border:2px solid var(--gold);text-align:center;position:relative;overflow:hidden" class="an d6">
@@ -587,7 +587,7 @@ const chart=new Chart(ctx,{
       c.font="400 9px 'Source Sans 3'";c.fillStyle='rgba(107,140,174,0.85)';
       c.fillText('n=11 \u00B7 D114',xR+pad,yMed+11);
 
-      /* Q1'26 chart bar endpoint label — inside chart, near the dot */
+      /* Latest-deal label (v8.13): names the most recent quarter with a Core deal, so readers do not expect dots in later quarters */
       let ti=-1; for(let k=0;k<Q.length;k++){if(TX[k]!==undefined)ti=k;}
       const yA=yS.getPixelForValue(TX[ti]);
       const xPrevA=ch.scales.x.getPixelForValue(ti-1);
@@ -595,7 +595,7 @@ const chart=new Chart(ctx,{
       const bxA=Math.round((xPrevA+xNowA)/2);
       c.textAlign='right';
       c.font="bold 11px 'Source Sans 3'";c.fillStyle='#C0392B';
-      c.fillText(Q[ti].replace("'","\u2019")+' avg $'+TX[ti],bxA-18,yA-14);
+      c.fillText('Latest deal: '+Q[ti].replace("'","\u2019")+(TI[ti]&&TI[ti].length>1?' avg':'')+' $'+TX[ti].toFixed(2),bxA-18,yA-14);
 
       c.restore();
     }},
